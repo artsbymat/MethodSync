@@ -30,8 +30,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${jetbrains_mono.variable} antialiased`}>
         <Navbar />
-        {children}
-        <Footer />
+        <div className="mt-14">
+          {children}
+          <Footer />
+        </div>
       </body>
     </html>
   );
