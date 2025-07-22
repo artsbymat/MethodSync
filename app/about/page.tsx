@@ -80,10 +80,18 @@ const AboutPage = () => {
             src={mainImage.src}
             alt={mainImage.alt}
             className="size-full max-h-[620px] rounded-xl object-cover lg:col-span-2"
+            width={600}
+            height={400}
           />
           <div className="flex flex-col gap-7 md:flex-row lg:flex-col">
             <div className="bg-muted flex flex-col justify-between gap-6 rounded-xl p-7 md:w-1/2 lg:w-auto">
-              <Image src={breakout.src} alt={breakout.alt} className="mr-auto h-12" />
+              <Image
+                src={breakout.src}
+                alt={breakout.alt}
+                className="mr-auto h-12"
+                width={48}
+                height={48}
+              />
               <div>
                 <p className="mb-2 text-lg font-semibold">{breakout.title}</p>
                 <p className="text-muted-foreground">{breakout.description}</p>
@@ -98,6 +106,8 @@ const AboutPage = () => {
               src={secondaryImage.src}
               alt={secondaryImage.alt}
               className="grow basis-0 rounded-xl object-cover md:w-1/2 lg:min-h-0 lg:w-auto"
+              width={600}
+              height={400}
             />
           </div>
         </div>
@@ -107,7 +117,13 @@ const AboutPage = () => {
           <div className="mt-8 flex flex-wrap justify-center gap-8">
             {defaultCompanies.map((company, idx) => (
               <div className="flex items-center gap-3" key={company.src + idx}>
-                <Image src={company.src} alt={company.alt} className="h-6 w-auto md:h-8" />
+                <Image
+                  src={company.src}
+                  alt={company.alt}
+                  className="h-6 w-auto md:h-8"
+                  width={100}
+                  height={50}
+                />
               </div>
             ))}
           </div>
