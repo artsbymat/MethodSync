@@ -1,9 +1,13 @@
+import { Faq } from "@/components/Faq";
+import { Feature } from "@/components/Feature";
 import { Hero } from "@/components/Hero";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen w-full items-center justify-center p-6 md:p-10">
+    <div className="mt-14 flex min-h-screen w-full flex-col items-center justify-center p-6 md:p-10">
       <Hero />
+      <Feature />
+      <Faq />
     </div>
   );
 }
