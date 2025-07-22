@@ -11,7 +11,8 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <NavigationMenu className="mx-auto mt-4 rounded-full bg-black p-1">
+    // TODO: hide the navbar on scroll down and show it on scroll up
+    <NavigationMenu className="fixed top-4 left-1/2 z-50 -translate-x-1/2 transform rounded-full bg-black p-1 shadow-lg">
       <NavigationMenuList className="flex items-center justify-between">
         <NavigationMenuItem className="rounded-full bg-white p-1">
           <Link href="https://artsbymat.vercel.app">
