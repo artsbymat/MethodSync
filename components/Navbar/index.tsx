@@ -28,15 +28,18 @@ const Navbar = () => {
         <NavigationMenuItem className="mr-2 ml-4 text-white">
           <Link href="/">Home</Link>
         </NavigationMenuItem>
-        <NavigationMenuItem className="mr-4 ml-2 text-white">
+        <NavigationMenuItem className="mx-2 text-white">
+          <Link href="/challenge">Challenge</Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem className="mr-4 text-white">
           <Link href="/about">About</Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger className="rounded-full">
             <Link href="/login">Account</Link>
           </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[300px] gap-4">
+          <NavigationMenuContent className="">
+            <ul className="grid w-[360px] gap-4">
               <li>
                 <NavigationMenuLink asChild>
                   <Link href="/login">

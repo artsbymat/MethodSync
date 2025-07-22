@@ -31,7 +31,7 @@ export default function RootLayout({
       <body className={`${inter.variable} ${jetbrains_mono.variable} antialiased`}>
         <Navbar />
         <div className="mt-14">
-          {children}
+          <main>{children}</main>
           <Footer />
         </div>
       </body>
