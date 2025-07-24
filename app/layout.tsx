@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { UserProvider } from "@/contexts/UserContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -29,11 +30,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${jetbrains_mono.variable} antialiased`}>
-        <Navbar />
-        <div className="mt-14">
-          <main>{children}</main>
-          <Footer />
-        </div>
+        <UserProvider>
+          <Navbar />
+          <div className="mt-14">
+            <main>{children}</main>
+            <Footer />
+          </div>
+        </UserProvider>
       </body>
     </html>
   );
