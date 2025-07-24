@@ -9,14 +9,16 @@ import {
   NavigationMenuTrigger
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useUser } from "@/hooks/useUser";
+import { useRouter } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const Navbar = () => {
+  const router = useRouter();
   const { user, setUser } = useUser();
 
   const handleLogout = async () => {
@@ -25,10 +27,10 @@ const Navbar = () => {
         method: "POST",
         credentials: "include"
       });
-      console.log(res);
 
       if (res.ok) {
         setUser(null);
+        router.push("/login");
       } else {
         console.error("Failed to logout");
       }
@@ -131,7 +133,7 @@ const Navbar = () => {
                       <li>
                         <Button
                           variant="outline"
-                          className="w-full cursor-pointer bg-red-400 text-white hover:bg-red-600 focus:bg-red-600"
+                          className="w-full cursor-pointer bg-red-400 text-white hover:bg-red-500 hover:text-white focus:bg-red-500"
                           onClick={handleLogout}
                         >
                           Logout
@@ -205,47 +207,96 @@ const Navbar = () => {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-              <nav className="mt-4 ml-8 flex flex-col gap-4">
-                <Link
-                  href="/"
-                  className="hover:text-primary py-2 text-lg font-medium transition-colors"
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/challenge"
-                  className="hover:text-primary py-2 text-lg font-medium transition-colors"
-                >
-                  Challenge
-                </Link>
-                <Link
-                  href="/about"
-                  className="hover:text-primary py-2 text-lg font-medium transition-colors"
-                >
-                  About
-                </Link>
+              <SheetTitle className="sr-only">menu</SheetTitle>
+              <nav className="mt-4 ml-4 flex flex-col gap-4">
+                <SheetClose asChild>
+                  <Link
+                    href="/"
+                    className="hover:text-primary py-2 text-lg font-medium transition-colors"
+                  >
+                    Home
+                  </Link>
+                </SheetClose>
+                {user && (
+                  <SheetClose asChild>
+                    <Link
+                      href="/challenge"
+                      className="hover:text-primary py-2 text-lg font-medium transition-colors"
+                    >
+                      Challenge
+                    </Link>
+                  </SheetClose>
+                )}
+                <SheetClose asChild>
+                  <Link
+                    href="/about"
+                    className="hover:text-primary py-2 text-lg font-medium transition-colors"
+                  >
+                    About
+                  </Link>
+                </SheetClose>
 
                 <div className="mt-4 border-t pt-4">
                   <h3 className="mb-4 font-medium">Account</h3>
                   <div className="space-y-4">
-                    <Link
-                      href="/login"
-                      className="hover:bg-accent block space-y-1 rounded-md p-3 transition-colors"
-                    >
-                      <div className="font-medium">Login</div>
-                      <p className="text-muted-foreground text-sm">
-                        Access your account to manage your profile and settings.
-                      </p>
-                    </Link>
-                    <Link
-                      href="/register"
-                      className="hover:bg-accent block space-y-1 rounded-md p-3 transition-colors"
-                    >
-                      <div className="font-medium">Register</div>
-                      <p className="text-muted-foreground text-sm">
-                        Create a new account to get started.
-                      </p>
-                    </Link>
+                    {user ? (
+                      <>
+                        <SheetClose asChild>
+                          <Link
+                            href="/profile"
+                            className="hover:bg-accent block space-y-1 rounded-md p-3 transition-colors"
+                          >
+                            <div className="font-medium">Profile</div>
+                            <p className="text-muted-foreground text-sm">
+                              View and edit your profile information.
+                            </p>
+                          </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Link
+                            href="/history"
+                            className="hover:bg-accent block space-y-1 rounded-md p-3 transition-colors"
+                          >
+                            <div className="font-medium">History</div>
+                            <p className="text-muted-foreground text-sm">
+                              View your past challenges and submissions.
+                            </p>
+                          </Link>
+                        </SheetClose>
+                        <Button
+                          variant="outline"
+                          className="mx-2 w-[80%] bg-red-400 pr-4 text-white hover:bg-red-500 hover:text-white focus:bg-red-500"
+                          onClick={handleLogout}
+                        >
+                          Logout
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <SheetClose asChild>
+                          <Link
+                            href="/login"
+                            className="hover:bg-accent block space-y-1 rounded-md p-3 transition-colors"
+                          >
+                            <div className="font-medium">Login</div>
+                            <p className="text-muted-foreground text-sm">
+                              Access your account to manage your profile and settings.
+                            </p>
+                          </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Link
+                            href="/register"
+                            className="hover:bg-accent block space-y-1 rounded-md p-3 transition-colors"
+                          >
+                            <div className="font-medium">Register</div>
+                            <p className="text-muted-foreground text-sm">
+                              Create a new account to get started.
+                            </p>
+                          </Link>
+                        </SheetClose>
+                      </>
+                    )}
                   </div>
                 </div>
               </nav>
