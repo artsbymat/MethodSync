@@ -41,8 +41,12 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
       setUser(result.user);
       router.push("/challenge");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Unexpected error");
+      }
     } finally {
       setLoading(false);
     }

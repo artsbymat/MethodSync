@@ -19,7 +19,6 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const Navbar = () => {
   const { user, setUser } = useUser();
 
-  console.log(user);
   const handleLogout = async () => {
     try {
       const res = await fetch(`${API_URL}/api/auth/logout`, {
