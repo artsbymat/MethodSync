@@ -1,7 +1,45 @@
+"use client";
 import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+
+const testCreateChallenge = async () => {
+  try {
+    const response = await fetch("http://localhost:3001/api/grader/js/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        title: "Double the Number",
+        slug: "double-the-number",
+        description: "Create a function that takes a number and returns double the value.",
+        difficulty: "easy",
+        category: "math",
+        hints: ["Gunakan operator perkalian.", "Pastikan input berupa angka."],
+        starter_code: "function doubleNumber(n) {\n  // your code here\n}",
+        test_cases: [
+          { input: 2, expectedOutput: 4 },
+          { input: 3, expectedOutput: 6 },
+          { input: 4, expectedOutput: 8 }
+        ],
+        estimated_time: 15,
+        is_published: true
+      })
+    });
+
+    console.log("Response status:", response);
+    if (!response.ok) {
+      throw new Error("Failed to create challenge");
+    }
+
+    const data = await response.json();
+    console.log("Challenge created:", data);
+  } catch (error) {
+    console.error("Error creating challenge:", error);
+  }
+};
 
 const Hero = () => {
   return (
@@ -17,7 +55,7 @@ const Hero = () => {
               programming to the next level.
             </p>
             <div className="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start">
-              <Button>
+              <Button onClick={testCreateChallenge}>
                 Get Started
                 <ArrowRight className="size-4" />
               </Button>
