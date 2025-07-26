@@ -16,7 +16,7 @@ interface Challenge {
   category: string;
 }
 
-const levelStyles = {
+const difficultyStyle = {
   easy: "bg-green-100 text-green-800",
   medium: "bg-yellow-100 text-yellow-800",
   hard: "bg-red-100 text-red-800"
@@ -33,7 +33,7 @@ const CardChallenge: React.FC<{ challenge: Challenge }> = ({ challenge }) => {
           <div className="flex-1">
             <h3 className="mb-2 text-lg font-semibold">{title}</h3>
             <Badge
-              className={cn(levelStyles[difficulty], "text-xs font-medium")}
+              className={cn(difficultyStyle[difficulty], "text-xs font-medium")}
               variant="secondary"
             >
               {difficulty}
@@ -46,7 +46,9 @@ const CardChallenge: React.FC<{ challenge: Challenge }> = ({ challenge }) => {
         </div>
 
         {/* Description */}
-        <p className="text-muted-foreground mb-4 text-sm leading-relaxed">{description}</p>
+        <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
+          {description.slice(0, 150) + "..."}
+        </p>
 
         {/* Footer */}
         <div className="flex items-center justify-between">

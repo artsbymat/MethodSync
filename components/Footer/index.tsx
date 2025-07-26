@@ -1,4 +1,6 @@
+"use client";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import React from "react";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 
@@ -81,6 +83,12 @@ const Footer = ({
   copyright = "© 2025 artsbymat.vercel.app All rights reserved.",
   legalLinks = defaultLegalLinks
 }: FooterProps) => {
+  const router = usePathname();
+  console.log(router);
+  if (router.startsWith("/challenge/")) {
+    return null; // Hide footer on challenge pages
+  }
+
   return (
     <section className="pt-32 pb-8">
       <div className="container mx-auto">

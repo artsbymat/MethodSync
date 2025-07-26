@@ -81,7 +81,7 @@ export default function Page() {
   );
 
   return (
-    <div className="mt-18 min-h-screen bg-gray-50 p-4 md:p-6">
+    <div className="mt-18 min-h-screen p-4 md:p-6">
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-8 lg:grid-cols-2">
           <div className="space-y-6">
