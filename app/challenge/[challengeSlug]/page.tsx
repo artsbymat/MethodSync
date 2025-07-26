@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback, useRef, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Play, Send, Clock } from "lucide-react";
+import { Play, Send, Clock, CheckCircle, XCircle } from "lucide-react";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { cn } from "@/lib/utils";
 import { useParams } from "next/navigation";
@@ -24,7 +24,11 @@ interface Challenge {
   starter_code: string;
 }
 
-type TestResult = string;
+type TestResult = {
+  input: string;
+  output: string;
+  result: string;
+};
 
 type MessageHandler = (event: MessageEvent) => void;
 
@@ -213,14 +217,53 @@ export default function ChallengePage() {
 
                     <TabsContent value="tests" className="m-0 flex-1 overflow-hidden">
                       <div className="h-full overflow-y-auto p-4">
-                        {testResults.map((res, i) => (
-                          <li
-                            key={i}
-                            className={res.startsWith("✅") ? "text-green-600" : "text-red-600"}
-                          >
-                            {res}
-                          </li>
-                        ))}
+                        <table className="w-full text-sm">
+                          <thead className="top-0 bg-white">
+                            <tr className="border-b">
+                              <th className="px-4 py-2 text-left">Test</th>
+                              <th className="px-4 py-2 text-left">Input</th>
+                              <th className="px-4 py-2 text-left">Expected Output</th>
+                              <th className="px-4 py-2 text-left">Result</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {testResults.map((result, i) => (
+                              <tr
+                                key={i}
+                                className={
+                                  result.result === "Passed"
+                                    ? "bg-green-50"
+                                    : result.result.startsWith("Error")
+                                      ? "bg-yellow-50"
+                                      : "bg-red-50"
+                                }
+                              >
+                                <td className="border-b px-4 py-2">{i + 1}</td>
+                                <td className="max-w-xs truncate border-b px-4 py-2 font-mono">
+                                  {result.input}
+                                </td>
+                                <td className="max-w-xs truncate border-b px-4 py-2 font-mono">
+                                  {result.output}
+                                </td>
+                                <td className="border-b px-4 py-2">
+                                  {result.result === "Passed" ? (
+                                    <span className="flex items-center text-green-600">
+                                      <CheckCircle className="mr-1 h-4 w-4" /> Passed
+                                    </span>
+                                  ) : result.result === "Failed" ? (
+                                    <span className="flex items-center text-red-600">
+                                      <XCircle className="mr-1 h-4 w-4" /> Failed
+                                    </span>
+                                  ) : (
+                                    <span className="flex items-center text-yellow-600">
+                                      <XCircle className="mr-1 h-4 w-4" /> {result.result}
+                                    </span>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
                     </TabsContent>
                   </Tabs>
