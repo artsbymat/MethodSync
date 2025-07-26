@@ -19,58 +19,83 @@ interface Challenge {
   category: string;
 }
 
+interface ApiResponse {
+  challenges?: Challenge[];
+  error?: string;
+}
+
 export default function Page() {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const loadedIds = useRef<Set<string>>(new Set());
 
-  const fetchChallenges = async (pageNumber: number) => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${API_URL}/api/challenges/js?page=${pageNumber}`, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
+  const fetchChallenges = useCallback(
+    async (pageNumber: number) => {
+      if (!hasMore || loading) return;
+
+      setLoading(true);
+      try {
+        const response = await fetch(`${API_URL}/api/challenges/js?page=${pageNumber}`, {
+          method: "GET",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" }
+        });
+
+        const data: ApiResponse | Challenge[] = await response.json();
+
+        // Handle error responses
+        if (!response.ok || ("error" in data && data.error)) {
+          setError(("error" in data && data.error) || "Failed to fetch challenges");
+          return;
         }
-      });
 
-      const data = await response.json();
+        // Handle successful responses
+        const newChallenges = "challenges" in data ? data.challenges : (data as Challenge[]);
 
-      if (!response.ok || data.error) {
-        setError(data.error || "Failed to fetch challenges");
-      } else {
-        if (data.length === 0) {
+        if (!newChallenges || newChallenges.length === 0) {
           setHasMore(false);
-        } else {
-          setChallenges((prev) => [...prev, ...data]);
-          setError(null);
+          return;
         }
+
+        // Filter out duplicates
+        const uniqueChallenges = newChallenges.filter((challenge) => {
+          if (loadedIds.current.has(challenge.id)) {
+            return false;
+          }
+          loadedIds.current.add(challenge.id);
+          return true;
+        });
+
+        setChallenges((prev) => [...prev, ...uniqueChallenges]);
+        setHasMore(newChallenges.length > 0);
+        setError(null);
+      } catch (err) {
+        setError("An unexpected error occurred while fetching challenges.");
+        console.error("Fetch challenges error:", err);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      setError("An unexpected error occurred while fetching challenges.");
-      console.error("Fetch challenges error:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [hasMore, loading]
+  );
 
   useEffect(() => {
     fetchChallenges(page);
-  }, [page]);
+  }, [page, fetchChallenges]);
 
-  // Observer untuk memicu pagination saat user scroll ke bawah
+  // Infinite scroll observer
   const observer = useRef<IntersectionObserver | null>(null);
-
   const lastChallengeRef = useCallback(
     (node: HTMLDivElement) => {
-      if (loading) return;
+      if (loading || !hasMore) return;
+
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
+        if (entries[0].isIntersecting && hasMore && !loading) {
           setPage((prev) => prev + 1);
         }
       });
@@ -79,6 +104,13 @@ export default function Page() {
     },
     [loading, hasMore]
   );
+
+  // Cleanup observer on unmount
+  useEffect(() => {
+    return () => {
+      observer.current?.disconnect();
+    };
+  }, []);
 
   return (
     <div className="mt-18 min-h-screen p-4 md:p-6">
@@ -112,7 +144,7 @@ export default function Page() {
               {challenges.map((challenge, index) => {
                 const isLast = index === challenges.length - 1;
                 return (
-                  <div key={challenge.id} ref={isLast ? lastChallengeRef : null}>
+                  <div key={`${challenge.id}-${index}`} ref={isLast ? lastChallengeRef : null}>
                     <CardChallenge challenge={challenge} />
                   </div>
                 );
@@ -137,7 +169,7 @@ export default function Page() {
               </div>
             )}
 
-            {!hasMore && !loading && (
+            {!hasMore && !loading && challenges.length > 0 && (
               <div className="text-muted-foreground pt-4 text-center text-sm">
                 You&apos;ve reached the end.
               </div>
