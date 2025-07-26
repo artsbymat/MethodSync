@@ -14,11 +14,13 @@ import { Menu } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useUser } from "@/hooks/useUser";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const Navbar = () => {
   const router = useRouter();
+  const pathname = usePathname();
+  console.log("Current pathname:", pathname);
   const { user, setUser } = useUser();
 
   const handleLogout = async () => {
@@ -65,29 +67,31 @@ const Navbar = () => {
             <NavigationMenuLink asChild>
               <Link
                 href="/"
-                className="px-3 py-2 text-sm font-medium text-white transition-colors hover:text-black"
+                className={`px-3 py-2 text-sm font-medium transition-colors ${pathname === "/" ? "bg-white text-black" : "text-white"}`}
               >
                 Home
               </Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
 
-          <NavigationMenuItem className="px-2">
-            <NavigationMenuLink asChild>
-              <Link
-                href="/challenge"
-                className="px-3 py-2 text-sm font-medium text-white transition-colors hover:text-black"
-              >
-                Challenge
-              </Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
+          {user && (
+            <NavigationMenuItem className="px-2">
+              <NavigationMenuLink asChild>
+                <Link
+                  href="/challenge"
+                  className={`px-3 py-2 text-sm font-medium transition-colors ${pathname.startsWith("/challenge") ? "bg-white text-black" : "text-white"}`}
+                >
+                  Challenge
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          )}
 
           <NavigationMenuItem className="px-2">
             <NavigationMenuLink asChild>
               <Link
                 href="/about"
-                className="px-3 py-2 text-sm font-medium text-white transition-colors hover:text-black"
+                className={`px-3 py-2 text-sm font-medium transition-colors ${pathname === "/about" ? "bg-white text-black" : "text-white"}`}
               >
                 About
               </Link>

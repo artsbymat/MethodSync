@@ -84,7 +84,6 @@ const Footer = ({
   legalLinks = defaultLegalLinks
 }: FooterProps) => {
   const router = usePathname();
-  console.log(router);
   if (router.startsWith("/challenge/")) {
     return null; // Hide footer on challenge pages
   }
