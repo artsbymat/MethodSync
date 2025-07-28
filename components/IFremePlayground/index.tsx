@@ -44,7 +44,7 @@ const IFramePlayground = forwardRef<HTMLIFrameElement, IFramePlaygroundProps>((p
           try {
             const fullCode = [
               '(function() {',
-              code,
+              code + ';',
               'return typeof ' + functionName + ' === "function"',
               '? ' + functionName,
               ': null;',

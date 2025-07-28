@@ -15,6 +15,7 @@ import "highlight.js/styles/base16/ia-light.css";
 import IFramePlayground from "@/components/IFremePlayground";
 
 interface Challenge {
+  id: string;
   title: string;
   difficulty: string;
   description: string;
@@ -46,6 +47,7 @@ export default function ChallengePage() {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("output");
   const messageHandlerRef = useRef<MessageHandler | null>(null);
+  const [submissionId, setSubmissionId] = useState<string | null>(null);
 
   // Fetch challenge data
   const fetchChallenge = useCallback(async (slug: string) => {
@@ -57,13 +59,27 @@ export default function ChallengePage() {
         headers: { "Content-Type": "application/json" }
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch challenge data");
-      }
-
+      if (!response.ok) throw new Error("Failed to fetch challenge data");
       const data: Challenge = await response.json();
       setChallenge(data);
-      setCode(data.starter_code);
+
+      const submissionRes = await fetch(
+        `${API_URL}/api/submissions/js/regular?challenge_id=${data.id}`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" }
+        }
+      );
+
+      const submissionData = submissionRes.ok ? await submissionRes.json() : null;
+      const submittedCode = submissionData?.data?.submitted_code;
+
+      setCode(submittedCode ?? data.starter_code);
+
+      if (submissionData?.data?.id) {
+        setSubmissionId(submissionData.data.id);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unexpected error occurred");
     } finally {
@@ -128,6 +144,43 @@ export default function ChallengePage() {
       "*"
     );
   }, [code, challenge]);
+
+  const handleSubmitCode = async () => {
+    if (!challenge) return;
+    setOutput("Submitting code...");
+
+    const payload = {
+      id_challenge: challenge.id,
+      user_code: code
+    };
+
+    const isUpdate = !!submissionId;
+    const endpoint = `${API_URL}/api/submissions/js/regular`;
+    const method = isUpdate ? "PUT" : "POST";
+
+    try {
+      const response = await fetch(endpoint, {
+        method,
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        setOutput("Failed to submit code");
+      }
+
+      const result = await response.json();
+
+      if (result.data) {
+        setOutput("Code submitted successfully!");
+      } else {
+        setOutput(result.error);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An unexpected error occurred");
+    }
+  };
 
   if (loading) {
     return <LoadingScreen />;
@@ -271,7 +324,7 @@ export default function ChallengePage() {
                   {/* Action Buttons */}
                   <div className="flex shrink-0 gap-3 border-t bg-white p-4">
                     <Button
-                      className="flex items-center gap-2"
+                      className="flex cursor-pointer items-center gap-2"
                       onClick={() => {
                         setActiveTab("tests");
                         runTests();
@@ -281,7 +334,13 @@ export default function ChallengePage() {
                       <Play className="h-4 w-4" />
                       {isPending ? "Running..." : "Run Tests"}
                     </Button>
-                    <Button className="flex items-center gap-2 bg-green-600 hover:bg-green-700">
+                    <Button
+                      className="flex cursor-pointer items-center gap-2 bg-green-600 hover:bg-green-700"
+                      onClick={() => {
+                        setActiveTab("output");
+                        handleSubmitCode();
+                      }}
+                    >
                       <Send className="h-4 w-4" />
                       Submit Code
                     </Button>

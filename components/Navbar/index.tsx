@@ -20,7 +20,6 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
-  console.log("Current pathname:", pathname);
   const { user, setUser } = useUser();
 
   const handleLogout = async () => {
