@@ -1,4 +1,4 @@
-import { Clock, Plus, Star, Users } from "lucide-react";
+import { Clock, Star } from "lucide-react";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -9,18 +9,11 @@ import { difficultyColors } from "@/utils/constants";
 export default function RegularChallenges() {
   return (
     <>
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex items-center justify-start">
         <div>
           <h3 className="text-foreground text-2xl font-bold">Regular Challenges</h3>
           <p className="text-muted-foreground">Practice coding challenges at your own pace</p>
         </div>
-        <Button
-          className="bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer"
-          size="lg"
-        >
-          <Plus className="mr-2 h-5 w-5" />
-          Create Room Challenge
-        </Button>
       </div>
 
       {/* Room Grid */}

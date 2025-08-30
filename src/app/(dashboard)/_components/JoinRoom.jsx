@@ -1,4 +1,4 @@
-import { Hash } from "lucide-react";
+import { Hash, LogIn, Plus } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -30,9 +30,15 @@ export default function JoinRoom() {
                 maxLength={6}
               />
             </div>
-            <div className="flex items-end">
+            <div className="flex items-end gap-x-2">
               <Button className="bg-accent hover:bg-accent/90 text-accent-foreground cursor-pointer">
+                <LogIn className="rotate-180" />
                 Join Room
+              </Button>
+
+              <Button className="bg-primary hover:bg-primary/90 text-accent-foreground cursor-pointer">
+                <Plus className="" />
+                Create Room
               </Button>
             </div>
           </div>
