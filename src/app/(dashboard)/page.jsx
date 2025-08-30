@@ -1,7 +1,7 @@
-import JoinRoom from "@/components/JoinRoom";
 import RegularChallenges from "@/components/RegularChallenges";
-import StatsCards from "@/components/StatsCards";
-import Welcome from "@/components/Welcome";
+import Welcome from "@/app/(dashboard)/_components/Welcome";
+import StatsCards from "./_components/StatsCards";
+import JoinRoom from "./_components/JoinRoom";
 
 export default function Home() {
   return (

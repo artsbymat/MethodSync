@@ -7,16 +7,16 @@ import { CheckCircle, XCircle } from "lucide-react";
 import { testResults } from "@/utils/dummy-data";
 import { useState } from "react";
 
-import Header from "@/components/Header";
-import CodeEditor from "@/components/CodeEditor";
-import JSPlayground from "@/components/JSPlayground";
+import HeaderChallenge from "../_components/HeaderChallenge";
+import CodeEditor from "@/app/challenges/_components/CodeEditor";
+import JSPlayground from "@/app/challenges/_components/JSPlayground";
 
 export default function ChallengePage() {
   const [code, setCode] = useState("// Write your code here");
 
   return (
     <div className="flex h-screen flex-col">
-      <Header challenge={challenge} />
+      <HeaderChallenge challenge={challenge} />
 
       {/* Main Content */}
       <ResizablePanelGroup direction="horizontal" className="h-[calc(100vh-64px)] w-full border">
