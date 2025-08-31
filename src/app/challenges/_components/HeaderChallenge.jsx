@@ -1,5 +1,5 @@
 import { Clock, Code2, LogOut, Play, Trophy } from "lucide-react";
-import { difficultyColors } from "@/utils/constants";
+import { difficultyColors } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 

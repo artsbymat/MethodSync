@@ -13,7 +13,7 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { difficultyOptions, timeLimitOptions, challengesOptions } from "@/utils/dummy-data";
+import { difficultyOptions, timeLimitOptions, challengesOptions } from "@/lib/dummy-data";
 import { Clock, Plus, Trophy, Users, X } from "lucide-react";
 
 export default function CreateChallengePage() {

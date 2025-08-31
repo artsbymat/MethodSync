@@ -1,5 +1,7 @@
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { AuthProvider } from "@/contexts/AuthContext";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -19,7 +21,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} ${jetbrain.variable} antialiased`}>{children}</body>
+      <AuthProvider>
+        <body className={`${inter.variable} ${jetbrain.variable} antialiased`}>
+          {children}
+          <Toaster />
+        </body>
+      </AuthProvider>
     </html>
   );
 }

@@ -2,14 +2,13 @@
 
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { challenge } from "@/utils/dummy-data";
+import { challenge } from "@/lib/dummy-data";
 import { CheckCircle, XCircle } from "lucide-react";
-import { testResults } from "@/utils/dummy-data";
+import { testResults } from "@/lib/dummy-data";
 import { useState } from "react";
-
 import HeaderChallenge from "../_components/HeaderChallenge";
-import CodeEditor from "@/app/challenges/_components/CodeEditor";
-import JSPlayground from "@/app/challenges/_components/JSPlayground";
+import CodeEditor from "../_components/CodeEditor";
+import JSPlayground from "../_components/JSPlayground";
 
 export default function ChallengePage() {
   const [code, setCode] = useState("// Write your code here");

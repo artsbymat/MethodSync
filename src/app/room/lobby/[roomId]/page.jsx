@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { difficultyColors } from "@/utils/constants";
+import { difficultyColors } from "@/lib/constants";
 import { Check, Clock, Copy, Crown, Play, Trophy, Users } from "lucide-react";
 import { useState } from "react";
 

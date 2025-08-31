@@ -3,8 +3,8 @@ import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "./ui/card";
-import { initialRooms } from "@/utils/dummy-data";
-import { difficultyColors } from "@/utils/constants";
+import { initialRooms } from "@/lib/dummy-data";
+import { difficultyColors } from "@/lib/constants";
 
 export default function RegularChallenges() {
   return (
