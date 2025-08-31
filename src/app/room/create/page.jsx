@@ -1,4 +1,5 @@
 import { Combobox } from "@/components/Combobox";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -76,7 +77,7 @@ export default function CreateChallengePage() {
                 <p className="text-muted-foreground text-xs">200/500 characters</p>
               </div>
 
-              {/* Difficulty and Category Row */}
+              {/* Difficulty and Max particapants row */}
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label className="text-card-foreground">Difficulty Level *</Label>
@@ -90,6 +91,28 @@ export default function CreateChallengePage() {
                           <div className="flex items-center space-x-2">
                             <div className={`h-2 w-2 rounded-full ${option.color.split(" ")[0]}`} />
                             <span>{option.label}</span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Max Participants */}
+                <div className="space-y-2">
+                  <Label htmlFor="maxParticipants" className="text-card-foreground">
+                    Max Participants
+                  </Label>
+                  <Select>
+                    <SelectTrigger className="bg-input border-border text-foreground">
+                      <SelectValue placeholder="Select max participants" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[10, 20, 30, 40, 50].map((num) => (
+                        <SelectItem key={num} value={num.toString()}>
+                          <div className="flex items-center space-x-2">
+                            <Users className="h-4 w-4" />
+                            <span>{num} participants</span>
                           </div>
                         </SelectItem>
                       ))}
@@ -118,28 +141,6 @@ export default function CreateChallengePage() {
                     </SelectContent>
                   </Select>
                 </div>
-
-                {/* Max Participants */}
-                <div className="space-y-2">
-                  <Label htmlFor="maxParticipants" className="text-card-foreground">
-                    Max Participants
-                  </Label>
-                  <Select>
-                    <SelectTrigger className="bg-input border-border text-foreground">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[10, 20, 30, 40, 50].map((num) => (
-                        <SelectItem key={num} value={num.toString()}>
-                          <div className="flex items-center space-x-2">
-                            <Users className="h-4 w-4" />
-                            <span>{num} participants</span>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
               </div>
 
               {/* Submit Button */}
@@ -159,6 +160,52 @@ export default function CreateChallengePage() {
                 </Button>
               </div>
             </form>
+          </CardContent>
+        </Card>
+
+        {/* Preview Card */}
+        <Card className="bg-card border-border mt-6">
+          <CardHeader>
+            <CardTitle className="text-card-foreground">Preview</CardTitle>
+            <CardDescription>This is how your challenge will appear to other users</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-start justify-between">
+                <div className="space-y-1">
+                  <h3 className="text-card-foreground text-lg font-semibold">Challenge Title</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Challenge description will appear here...
+                  </p>
+                </div>
+                <Badge
+                  className={
+                    difficultyOptions.find((d) => d.value === "hard")?.color ||
+                    "bg-secondary text-secondary-foreground"
+                  }
+                >
+                  {difficultyOptions.find((d) => d.value === "hard")?.label}
+                </Badge>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Avatar className="h-6 w-6">
+                  <AvatarFallback className="text-xs">JD</AvatarFallback>
+                </Avatar>
+                <span className="text-muted-foreground text-sm">Hosted by John Doe</span>
+              </div>
+
+              <div className="flex items-center justify-start gap-x-4 text-sm">
+                <div className="flex items-center space-x-1">
+                  <Users className="text-muted-foreground h-4 w-4" />
+                  <span className="text-muted-foreground">10/20</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Clock className="text-muted-foreground h-4 w-4" />
+                  <span className="text-muted-foreground">30 Minutes</span>
+                </div>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
