@@ -2,9 +2,10 @@ import { Clock, Code2, LogOut, Play, Trophy } from "lucide-react";
 import { difficultyColors } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default function HeaderChallenge({ challenge }) {
-  const { title, difficulty, timeLimit } = challenge || {};
+export default function HeaderChallenge({ challenge, run }) {
+  const { title, difficulty, estimated_time } = challenge || {};
 
   return (
     <header className="border-border bg-card border-b">
@@ -18,16 +19,21 @@ export default function HeaderChallenge({ challenge }) {
               <h1 className="text-foreground text-xl font-bold">{title}</h1>
 
               <div className="flex items-center space-x-2">
-                <Badge className={difficultyColors[difficulty]}>{difficulty}</Badge>
+                <Badge className={difficultyColors[difficulty]}>
+                  <span className="capitalize">{difficulty}</span>
+                </Badge>
                 <span className="text-muted-foreground flex items-center text-sm">
                   <Clock className="mr-1 h-3 w-3" />
-                  {timeLimit}
+                  {estimated_time}
                 </span>
               </div>
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <Button className="bg-green-600 text-white hover:bg-green-700">
+            <Button
+              className="cursor-pointer bg-green-600 text-white hover:bg-green-700"
+              onClick={run}
+            >
               <Play className="mr-2 h-4 w-4" />
               Run Code
             </Button>
