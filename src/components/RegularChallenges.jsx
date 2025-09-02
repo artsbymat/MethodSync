@@ -8,7 +8,7 @@ import ChallengeCard from "./CardChallenge";
 export default function RegularChallenges() {
   const router = useRouter();
   const [listChallenges, setListChallenges] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchChallenges = async () => {

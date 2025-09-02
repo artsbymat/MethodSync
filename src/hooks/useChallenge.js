@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 
 export function useChallenge(slug) {
   const [challenge, setChallenge] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [submissionCode, setSubmissionCode] = useState(null);
 
   useEffect(() => {
     if (!slug) {
@@ -26,7 +27,19 @@ export function useChallenge(slug) {
         if (!data.success) {
           throw new Error(data.message || "Unknown error");
         }
+
         setChallenge(data.challenge);
+
+        if (data.challenge && data.challenge.id) {
+          const submissionCodeRes = await fetch(
+            `/api/submission/regular?id=${encodeURIComponent(data.challenge.id)}`
+          );
+          const responseData = await submissionCodeRes.json();
+
+          if (responseData.submission) {
+            setSubmissionCode(responseData.submission.code);
+          }
+        }
       } catch (err) {
         setChallenge(null);
         setError(err.message || "Failed to fetch challenge");
@@ -38,5 +51,5 @@ export function useChallenge(slug) {
     fetchChallenge();
   }, [slug]);
 
-  return { challenge, loading, error };
+  return { challenge, loading, error, submissionCode };
 }

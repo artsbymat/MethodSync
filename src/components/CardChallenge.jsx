@@ -53,7 +53,11 @@ export default function ChallengeCard({ challenge, onClick }) {
         <div className="flex items-center space-x-2">
           <Avatar className="h-6 w-6">
             <AvatarImage src={challenge.profiles.avatar_url} />
-            <AvatarFallback className="text-xs" />
+            <AvatarFallback className="text-xs">
+              {challenge.profiles.display_name
+                ? challenge.profiles.display_name.charAt(0).toUpperCase()
+                : "U"}
+            </AvatarFallback>
           </Avatar>
           <span className="text-muted-foreground text-sm">
             Created by {challenge.profiles.display_name}

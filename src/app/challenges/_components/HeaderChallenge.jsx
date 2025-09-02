@@ -1,12 +1,17 @@
-import { Clock, Code2, LogOut, Play, Trophy } from "lucide-react";
+import { Clock, Code2, LogOut, Play, Star, Trophy } from "lucide-react";
 import { difficultyColors } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Spinner } from "@/components/Spinner";
 
-export default function HeaderChallenge({ challenge, run }) {
+export default function HeaderChallenge({ challenge, run, onTabChange, submit, isSubmitting }) {
   const { title, difficulty, estimated_time } = challenge || {};
+  const handleSubmit = () => {
+    onTabChange("output");
+    submit();
+  };
 
+  const isFavorited = true; // TODO: replace with actual favorite state
   return (
     <header className="border-border bg-card border-b">
       <div className="mx-auto px-4 py-4">
@@ -35,10 +40,14 @@ export default function HeaderChallenge({ challenge, run }) {
               onClick={run}
             >
               <Play className="mr-2 h-4 w-4" />
-              Run Code
+              Test Code
             </Button>
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-              <Trophy className="mr-2 h-4 w-4" />
+            <Button
+              className="bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? <Spinner /> : <Trophy className="mr-2 h-4 w-4" />}
               Submit
             </Button>
           </div>
