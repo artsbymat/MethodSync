@@ -199,7 +199,7 @@ export default function ChallengePage() {
                   </>
                 )}
               </Button>
-              <Button className="flex-1" onClick={() => setShowResultsPopup(false)}>
+              <Button className="flex-1 cursor-pointer" onClick={() => setShowResultsPopup(false)}>
                 Continue
               </Button>
             </div>
