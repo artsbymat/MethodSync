@@ -16,6 +16,8 @@ import TestCaseResults from "../_components/TestCaseResults";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { CheckCircle, Star, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useFavorite } from "@/hooks/useFavorite";
+import { Spinner } from "@/components/Spinner";
 
 export default function ChallengePage() {
   const { slug } = useParams();
@@ -31,7 +33,11 @@ export default function ChallengePage() {
     response: submitResponse
   } = useSubmitCode();
 
-  const isFavorited = true;
+  const {
+    favorited: isFavorited,
+    toggleFavorite: toggleIsFavorited,
+    loading: favoritedLoading
+  } = useFavorite(challenge?.id);
 
   const testResults = submitResponse?.submission?.test_results || results;
   const totalTests = testResults.length;
@@ -180,10 +186,18 @@ export default function ChallengePage() {
             <div className="flex space-x-2 pt-4">
               <Button
                 variant="outline"
-                className={`flex-1 ${isFavorited ? "border-yellow-400/30 text-yellow-400" : ""}`}
+                className={`flex-1 hover:text-yellow-400 ${isFavorited ? "border-yellow-400/30 text-yellow-400" : ""} ${favoritedLoading ? "cursor-progress" : "cursor-pointer"} `}
+                onClick={toggleIsFavorited}
+                disabled={favoritedLoading}
               >
-                <Star className={`mr-2 h-4 w-4 ${isFavorited ? "fill-current" : ""}`} />
-                {isFavorited ? "Favorited" : "Add to Favorites"}
+                {favoritedLoading ? (
+                  <Spinner size="1rem" />
+                ) : (
+                  <>
+                    <Star className={`mr-2 h-4 w-4 ${isFavorited ? "fill-current" : ""}`} />
+                    {isFavorited ? "Favorited" : "Add to Favorites"}
+                  </>
+                )}
               </Button>
               <Button className="flex-1" onClick={() => setShowResultsPopup(false)}>
                 Continue

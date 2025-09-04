@@ -170,7 +170,7 @@ export default function TestCaseResults({ code, challenge }) {
         srcDoc={sandboxHtml}
         style={{ display: "none" }}
       />
-      <ul className="space-y-2">
+      <ul className="m-2 space-y-2">
         {results.map((result, idx) => (
           <li
             key={idx}

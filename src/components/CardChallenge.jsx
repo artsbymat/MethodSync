@@ -32,7 +32,7 @@ export default function ChallengeCard({ challenge, onClick }) {
           </div>
           <div className="flex items-center space-x-1">
             <Star className="text-muted-foreground h-4 w-4" />
-            <span className="text-muted-foreground">{challenge.favorite_count}</span>
+            <span className="text-muted-foreground">{challenge.favorites_count}</span>
           </div>
         </div>
 

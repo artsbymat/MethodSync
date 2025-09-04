@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { requireUser } from "../_lib/middleware";
 import { createClient } from "@/lib/supabase/server";
 import { extractFunctionName } from "@/lib/utils";
@@ -35,28 +35,26 @@ export async function POST(request) {
 
   const { results, status } = await runUserCode(code, functionName, challenge.hidden_test_cases);
 
-  return NextResponse.json({ results, status });
+  const { data: submission, error: submissionError } = await supabase
+    .from("submissions")
+    .upsert(
+      {
+        challenge_id: challenge.id,
+        user_id: user.id,
+        code,
+        status,
+        test_results: results
+      },
+      { onConflict: ["user_id", "challenge_id"] }
+    )
+    .select()
+    .single();
 
-  // const { data: submission, error: submissionError } = await supabase
-  //   .from("submissions")
-  //   .upsert(
-  //     {
-  //       challenge_id: challenge.id,
-  //       user_id: user.id,
-  //       code,
-  //       status,
-  //       test_results: results
-  //     },
-  //     { onConflict: ["user_id", "challenge_id"] }
-  //   )
-  //   .select()
-  //   .single();
+  if (submissionError) {
+    return NextResponse.json({ error: submissionError.message }, { status: 500 });
+  }
 
-  // if (submissionError) {
-  //   return NextResponse.json({ error: submissionError.message }, { status: 500 });
-  // }
-
-  // return NextResponse.json({ submission });
+  return NextResponse.json({ submission });
 }
 
 export async function GET(request) {
