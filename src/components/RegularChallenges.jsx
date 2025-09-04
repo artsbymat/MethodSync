@@ -1,35 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "./ui/skeleton";
 import ChallengeCard from "./CardChallenge";
+import { useChallenges } from "@/hooks/useChallenges";
 
 export default function RegularChallenges() {
   const router = useRouter();
-  const [listChallenges, setListChallenges] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { challenges: listChallenges, loading, error } = useChallenges();
 
-  useEffect(() => {
-    const fetchChallenges = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch("/api/challenges");
-        const data = await response.json();
-        if (data.success) {
-          setListChallenges(data.challenges);
-        } else {
-          console.error("Failed to fetch challenges:", data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching challenges:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchChallenges();
-  }, []);
+  if (error) {
+    return <div className="text-red-500">Error: {error}</div>;
+  }
 
   return (
     <>

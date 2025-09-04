@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireUser } from "../_lib/middleware";
+import { requireUser } from "../../_lib/middleware";
 import { createClient } from "@/lib/supabase/server";
 import { extractFunctionName } from "@/lib/utils";
 import { runUserCode } from "../_lib/grader";

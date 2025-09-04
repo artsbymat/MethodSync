@@ -125,16 +125,6 @@ export const challengesOptions = [
   }
 ];
 
-export const difficultyOptions = [
-  { value: "easy", label: "Easy", color: "bg-green-500/20 text-green-400 border-green-500/30" },
-  {
-    value: "medium",
-    label: "Medium",
-    color: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
-  },
-  { value: "hard", label: "Hard", color: "bg-red-500/20 text-red-400 border-red-500/30" }
-];
-
 export const categoryOptions = [
   "Algorithms",
   "Data Structures",
@@ -144,13 +134,4 @@ export const categoryOptions = [
   "System Design",
   "Security",
   "Performance"
-];
-
-export const timeLimitOptions = [
-  { value: "15", label: "15 minutes" },
-  { value: "30", label: "30 minutes" },
-  { value: "45", label: "45 minutes" },
-  { value: "60", label: "1 hour" },
-  { value: "90", label: "1.5 hours" },
-  { value: "120", label: "2 hours" }
 ];

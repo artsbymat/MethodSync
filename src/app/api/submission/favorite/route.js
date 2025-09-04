@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireUser } from "../_lib/middleware";
+import { requireUser } from "../../_lib/middleware";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request) {

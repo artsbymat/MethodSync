@@ -3,6 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 
 export default function JoinRoom() {
   return (
@@ -36,10 +37,12 @@ export default function JoinRoom() {
                 Join Room
               </Button>
 
-              <Button className="bg-primary hover:bg-primary/90 text-accent-foreground cursor-pointer">
-                <Plus className="" />
-                Create Room
-              </Button>
+              <Link href="/room/create">
+                <Button className="bg-primary hover:bg-primary/90 text-accent-foreground cursor-pointer">
+                  <Plus className="" />
+                  Create Room
+                </Button>
+              </Link>
             </div>
           </div>
         </CardContent>
